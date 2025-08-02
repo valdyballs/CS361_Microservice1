@@ -106,3 +106,11 @@ sequenceDiagram
         ZeroMQ->>Client: Deliver Response
     end
 ```
+#
+## Notes
+* This microservice handles CSV import from ./import.csv, export to ./export.csv, and data type validation.
+* Requests must include an action field with value "import", "export", or "validate".
+* Responses are returned as Python objects for compatibility with ZeroMQ transmission.
+* Supported data types for validation: "int", "float", "bool", "str".
+* The microservice runs on port 5554 using ZeroMQ REQ/REP pattern.
+* For boolean conversion: true, 1, yes, on convert to True; all others convert to False
