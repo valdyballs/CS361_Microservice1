@@ -86,3 +86,23 @@ else:
 ```
 # UML Sequence Diagram
 The following UML sequence diagram shows how the main program interacts with the microservice to request and receive CSV processing operations:
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ZeroMQ
+    participant CSVProcessingMicroservice
+    
+    Client->>ZeroMQ: Send Python Request (action, data, types)
+    ZeroMQ->>CSVProcessingMicroservice: Forward Request
+    CSVProcessingMicroservice->>CSVProcessingMicroservice: Process CSV operation
+    CSVProcessingMicroservice->>ZeroMQ: Send Python Response (status, message, data)
+    ZeroMQ->>Client: Deliver Response
+    
+    alt Invalid Request
+        Client->>ZeroMQ: Send Python Request (invalid action)
+        ZeroMQ->>CSVProcessingMicroservice: Forward Request
+        CSVProcessingMicroservice->>CSVProcessingMicroservice: Identifies invalid input
+        CSVProcessingMicroservice->>ZeroMQ: Send Python Response (status: error, message)
+        ZeroMQ->>Client: Deliver Response
+    end
+```
